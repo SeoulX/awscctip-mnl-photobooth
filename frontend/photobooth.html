@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Capture</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <video id="video" autoplay></video>
+        <button id="captureBtn">Capture</button>
+        <div id="imageAndButtonContainer" style="display: none;"> 
+            <img id="capturedImage" alt="Captured Image">
+            <button id="retakeBtn">Take Again</button>  
+        </div>
+    </div>
+
+    <div id="previewModal" style="display: none;">
+        <img id="previewImage" alt="Preview Image">
+        <button id="retakePhotoBtn">Retake Photo</button>
+        <button id="proceedBtn">Proceed</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

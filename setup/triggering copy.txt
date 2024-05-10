@@ -1,0 +1,42 @@
+import json
+import boto3
+import io
+
+s3Client = boto3.client('s3')
+ses_client = boto3.client('ses')
+
+def lambda_handler(event, context):
+    bucket = event['Records'][0]['s3']['bucket']['name']
+    key = event['Records'][0]['s3']['object']['key']
+
+    # Verify it's in the "uploads" folder
+    if not key.startswith('uploads/'):
+        print('File not in uploads folder. Skipping')
+        return
+
+    # Verify it's an image
+    if not key.lower().endswith(('.jpg', '.jpeg', '.png', '.gif')):
+        print('Not an image file. Skipping.')
+        return
+
+    # Construct the image URL (assuming public access)
+    product_image_url = f"https://{bucket}.s3.amazonaws.com/{key}"
+    
+    template_data_json = json.dumps({
+        'productImageURL': product_image_url,
+    })
+
+    # Send email using SES template
+    response = ses_client.send_templated_email(
+        Source='mabinas@tip.edu.ph',
+        Destination={
+            'ToAddresses': ['jrcabalo056@gmail.com']
+        },
+        Template='SendEmailWithImage',
+        TemplateData=template_data_json
+    )
+    print("Template Data:", Template_json)
+
+    print("SES Response:", response)
+    
+    print('Email sent!')
